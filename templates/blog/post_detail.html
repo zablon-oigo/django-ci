@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load blog_tags %}
+{% block title %}
+{{post.title}}
+{% endblock %}
+
+{% block content %}
+<h1 class="">{{post.title }}</h1>
+<p class="">{{post.content|markdown}}</p>
+<p class="">By {{post.author}} on<span class="">{{post.publish}}</span></p>
+<hr>
+<h2 class="">similar Post</h2>
+{% for post in similar_post %}
+<p class=""><a href="{{post.get_absolute_url}}" class="">{{post.title}}</a></p>
+{% empty %}
+<p class="">There are no similar post </p>
+{% endfor %}
+
+<hr>
+{% with comments.count as total_comments %}
+<h2 class="">{{total_comments}} comment{{total_comments|pluralize}}</h2>
+{% endwith %}
+{% for comment in comments %}
+<div class="">
+    <p class="">Comment {{forloop.counter}} by {{comment.user.username}}{{comment.created}}</p>
+    <p class="">{{comment.comment |linebreaks }}</p>
+    {% for reply in comment.reply.all %}
+    <p class="">{{reply.user.username}} | {{reply.created}}</p>
+     <li class="">{{reply.comment}}</li>
+     {% endfor %}
+     <h5 class="">Reply</h5>
+     <form action="{% url 'blog:post_comment' post.id %}" class="">
+        {{form.as_p}}
+        {% csrf_token %}
+        <!-- Hidden input for parent comment.id -->
+        <input type="hidden" name="parent_id" value="{{comment.id}}">
+        <input type="submit" class="" value="Reply">
+     </form>
+</div>
+{% empty %}
+<p class="">There are no comments </p>
+
+{% endfor %}
+{% include "blog/includes/comment_form.html" %}
+{% endblock %}
