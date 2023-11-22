@@ -28,8 +28,8 @@
     <p class="">{{reply.user.username}} | {{reply.created}}</p>
      <li class="">{{reply.comment}}</li>
      {% endfor %}
-     <h5 class="">Reply</h5>
-     <form action="{% url 'blog:post_comment' post.id %}" class="">
+     <h3 class="">Reply</h3>
+     <form action="{% url 'blog:post_comment' post.id %}" class="" method="post">
         {{form.as_p}}
         {% csrf_token %}
         <!-- Hidden input for parent comment.id -->
