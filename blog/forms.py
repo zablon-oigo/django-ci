@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment
+from .models import Comment,Post
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -8,3 +8,9 @@ class CommentForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     query=forms.CharField()
+
+
+class CreatePostForm(forms.ModelForm):
+    class Meta:
+        model=Post
+        fields=['title','image','content','status','tags',]

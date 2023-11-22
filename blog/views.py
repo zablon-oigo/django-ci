@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from .models import Post,Comment
-from .forms import CommentForm,SearchForm
+from .forms import CommentForm,SearchForm,CreatePostForm
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from taggit.models import Tag
@@ -70,3 +70,16 @@ def post_search(request):
             ).filter(search=query)
 
     return render(request, 'blog/search.html', {'form':form,'query':query,'results':results})
+
+
+def create_post(request):
+    if request.method =="POST":
+        form=CreatePostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post=form.save(commit=False)
+            post.author=request.user
+            post.save()
+            return redirect(post.get_absolute_url())
+    else:
+        form=CreatePostForm()
+    return render(request,"blog/create_post.html",{"form":form})
