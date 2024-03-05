@@ -30,4 +30,10 @@ class PostTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Demo title")
         self.assertTemplateUsed(response, "post_list.html")
+    
+    def test_post_detail_view(self):
+        response=self.client.get(reverse("post_detail", kwargs={"pk":self.post.pk, "slug":self.post.slug}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Demo title")
+        self.assertTemplateUsed(response, "post_detail.html")
 
