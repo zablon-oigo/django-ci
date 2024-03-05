@@ -54,3 +54,8 @@ class PostTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Post.objects.last().title, "another title")
         self.assertEqual(Post.objects.last().content, "add content")
+
+    
+    def test_post_delete_view(self):
+        response=self.client.post(reverse("delete", args="1"))
+        self.assertEqual(response.status_code, 302)
