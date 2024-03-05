@@ -36,4 +36,12 @@ class PostTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Demo title")
         self.assertTemplateUsed(response, "post_detail.html")
-
+   
+    def test_post_create_view(self):
+        response=self.client.post(reverse("create"),{
+            "title":"updated title",
+            "content":"new content"
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Post.objects.last().title, "updated title")
+        self.assertEqual(Post.objects.last().content, "new content")
