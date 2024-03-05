@@ -17,4 +17,10 @@ class PostTest(TestCase):
             author=cls.user,
             content="Demo text"
         )
+    
+    def test_post_list_view(self):
+        response=self.client.get(reverse("post_list"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Demo title")
+        self.assertTemplateUsed(response, "post_list.html")
 
