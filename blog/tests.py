@@ -17,6 +17,13 @@ class PostTest(TestCase):
             author=cls.user,
             content="Demo text"
         )
+    def test_model_content(self):
+        self.assertEqual(self.post.title, "Demo title")
+        self.assertEqual(self.post.slug, "demo-title")
+        self.assertEqual(self.post.author.username, "testuser")
+        self.assertEqual(self.post.content, "Demo text")
+        self.assertEqual(str(self.post), "Demo title")
+
     
     def test_post_list_view(self):
         response=self.client.get(reverse("post_list"))
