@@ -45,3 +45,12 @@ class PostTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Post.objects.last().title, "updated title")
         self.assertEqual(Post.objects.last().content, "new content")
+    
+    def test_post_update_view(self):
+        response=self.client.post(reverse("update", args="1"),{
+            "title":"another title",
+            "content":"add content",
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Post.objects.last().title, "another title")
+        self.assertEqual(Post.objects.last().content, "add content")
