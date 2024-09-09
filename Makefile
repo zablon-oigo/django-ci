@@ -1,7 +1,7 @@
 .PHONY: runserver
 runserver:
 	@echo "Starting the Django development server..."
-	python manage.py runserver 0.0.0.0:8000
+	python manage.py runserver
 
 .PHONY: migrations
 migrations:
@@ -22,17 +22,7 @@ app:
 .PHONY: static
 static:
 	@echo "Collecting static files..."
-	python3 manage.py collectstatic --noinput
-
-.PHONY: sync
-sync:
-	@echo "Running database migrations and synchronizing database schema..."
-	python manage.py migrate --run-syncdb
-
-.PHONY: kill
-kill:
-	@echo "Killing the process running on port 8000..."
-	sudo fuser -k 8000/tcp
+	python manage.py collectstatic --noinput
 
 .PHONY: admin
 admin:
