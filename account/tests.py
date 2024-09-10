@@ -8,3 +8,10 @@ class UsersMnagersTest(TestCase):
             email="test@user.com",
             password="test"
         )
+        self.assertEqual(user.email,"test@user.com")
+        self.assertEqual(user.is_staff)
+        self.assertEqual(user.is_superuser)
+        try:
+            self.assertIsNone(user.username)
+        except AttributeError:
+            pass
