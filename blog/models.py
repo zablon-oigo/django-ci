@@ -6,7 +6,7 @@ class PublishedManager(models.Manager):
         return super().get_queryset().filter(status=Post.Status.PUBLISHED)
 class Post(models.Model):
     title=models.CharField(max_length=200)
-    slug=models.SlugField(max_length=200)
+    slug=models.SlugField(max_length=200,unique_for_date='publish')
     body=models.TextField()
     publish=models.DateTimeField(default=timezone.now)
     created=models.DateTimeField(auto_now_add=True)
