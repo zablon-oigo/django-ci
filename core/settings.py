@@ -125,3 +125,7 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL="account.CustomUser"
+EMAIL_HOST=''
+EMAIL_HOST_USER=''
+EMAIL_PORT=''
+EMAIL_USE_TLS=True
