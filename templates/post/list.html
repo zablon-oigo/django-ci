@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+List
+{% endblock %}
+
+{% block content %}
+<div class="">
+    <h2 class="">
+        my blog
+    </h2>
+    <div class="">
+        {% for post in posts %}
+        <h2 class="">
+            <a href="" class="">
+                {{post.title}}
+            </a>
+        </h2>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
