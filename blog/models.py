@@ -33,4 +33,4 @@ class Post(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
     def get_absolute_url(self):
-        return reverse('blog:post_detail', args=[self.publish.year,self.publish.month,self.publish.day,self.slug])
+        return reverse('blog:detail', args=[self.publish.year,self.publish.month,self.publish.day,self.slug])
