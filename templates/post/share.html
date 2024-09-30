@@ -17,7 +17,12 @@ Share a post
     Share "{{post.title}}" by e-mail
 </h2>
 <form action="" method="post" class="">
-    {{form.as_p}}
+    {% for field in form %}
+    <div class="">
+        {{field.errors}}
+        {{field.label_tag}}{{field}}
+    </div>
+    {% endfor %}
     {% csrf_token %}
     <input type="submit" value="Send e-mail" class="">
 </form>
