@@ -14,5 +14,10 @@ Detail
             {{post.body}}
         </p>
     </div>
+    <div class="">
+        <a href="{% url 'blog:post_share' post.id %}" class="">
+            share this post
+        </a>
+    </div>
 </div>
 {% endblock %}
