@@ -27,3 +27,6 @@ class RegisterUser(forms.ModelForm):
         if qs.exists():
             raise forms.ValidationError("Email is already in use !!!!")
         return data
+class LoginForm(forms.Form):
+    email=forms.CharField(max_length=65)
+    password=forms.CharField(max_length=65)
