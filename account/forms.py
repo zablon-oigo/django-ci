@@ -21,3 +21,9 @@ class RegisterUser(forms.ModelForm):
         if cd['password1'] != cd['password2']:
             raise forms.ValidationError('Password did not match')
         return cd['password2']
+    def clean_email(self):
+        data=self.cleaned_data['email']
+        qs=CustomUser.objects.exclude(id=self.instance.id).filter(email=data)
+        if qs.exists():
+            raise forms.ValidationError("Email is already in use !!!!")
+        return data
