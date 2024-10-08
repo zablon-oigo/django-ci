@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
 
-from .forms import LoginForm
+from .forms import LoginForm, RegisterUser
 
 
 def sign_in(request):
@@ -21,3 +21,17 @@ def sign_in(request):
         messages.error(request, "Invalid username or password")
     form = LoginForm()
     return render(request, "accounts/login.html", {"form": form})
+
+
+def sign_up(request):
+    if request.method == "POST":
+        form = RegisterUser(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.email = user.email.lower()
+            user.save()
+            return render(request, "accounts/register.html", {"user": user})
+
+    else:
+        form = RegisterUser()
+    return render(request, "accounts/register.html", {"form": form})
