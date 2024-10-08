@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 
 from .forms import LoginForm, RegisterUser
@@ -35,3 +35,9 @@ def sign_up(request):
     else:
         form = RegisterUser()
     return render(request, "accounts/register.html", {"form": form})
+
+
+def sign_out(request):
+    logout(request)
+    messages.success(request, "Logout request was successfull")
+    return redirect("login")
