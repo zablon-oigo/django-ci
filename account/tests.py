@@ -1,14 +1,12 @@
-from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.test import TestCase
+
 
 class UsersMnagersTest(TestCase):
     def test_create_user(self):
-        User=get_user_model()
-        user=User.objects.create_user(
-            email="test@user.com",
-            password="test"
-        )
-        self.assertEqual(user.email,"test@user.com")
+        User = get_user_model()
+        user = User.objects.create_user(email="test@user.com", password="test")
+        self.assertEqual(user.email, "test@user.com")
         self.assertEqual(user.is_staff)
         self.assertEqual(user.is_superuser)
         try:
@@ -20,11 +18,13 @@ class UsersMnagersTest(TestCase):
         with self.assertRaises(TypeError):
             User.objects.create_user(email="")
         with self.assertRaises(ValueError):
-            User.objects.create_user(email="",password="test")
+            User.objects.create_user(email="", password="test")
 
     def test_create_superuser(self):
-        User=get_user_model()
-        admin_user=User.objects.create_superuser(email="superuser@mail.com", password="test")
+        User = get_user_model()
+        admin_user = User.objects.create_superuser(
+            email="superuser@mail.com", password="test"
+        )
         self.assertEqual(admin_user.email, "superuser@mail.com")
         self.assertTrue(admin_user.is_active)
         self.assertTrue(admin_user.is_staff)
@@ -36,7 +36,5 @@ class UsersMnagersTest(TestCase):
             pass
         with self.assertRaises(ValueError):
             User.objects.create_user(
-                email="superuser@mail.com",
-                password="test",
-                is_superuser=False
+                email="superuser@mail.com", password="test", is_superuser=False
             )

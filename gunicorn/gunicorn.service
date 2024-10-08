@@ -8,6 +8,6 @@ Group=www-data
 WorkingDirectory=/home/ubuntu/django-ci
 ExecStart=/home/ubuntu/env/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/ubuntu/django-ci/core/core.sock core.wsgi:application
 
-       
+
 [Install]
 WantedBy=multi-user.target

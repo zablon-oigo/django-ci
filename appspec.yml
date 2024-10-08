@@ -1,6 +1,6 @@
 version: 0.0
 os: linux
-files: 
+files:
   - source: /
     destination: /home/ubuntu/django-ci
 permissions:
@@ -33,5 +33,3 @@ hooks:
       - location: scripts/start_app.sh
         timeout: 300
         runas: ubuntu
-  
-  
