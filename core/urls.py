@@ -23,4 +23,5 @@ admin.site.index_title = "Site administration"
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("blog.urls", namespace="blog")),
+    path("account/", include("account.urls")),
 ]
