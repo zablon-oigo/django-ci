@@ -1,23 +1,13 @@
 {% extends 'base.html' %}
-
-{% block title %}
-Detail
-{% endblock %}
-
+{% block title %}Detail{% endblock %}
 {% block content %}
-<div class="">
     <div class="">
-        <h2 class="">
-                {{post.title}}
-        </h2>
-        <p class="">
-            {{post.body}}
-        </p>
+        <div class="">
+            <h2 class="">{{ post.title }}</h2>
+            <p class="">{{ post.body }}</p>
+        </div>
+        <div class="">
+            <a href="{% url 'blog:post_share' post.id %}" class="">share this post</a>
+        </div>
     </div>
-    <div class="">
-        <a href="{% url 'blog:post_share' post.id %}" class="">
-            share this post
-        </a>
-    </div>
-</div>
 {% endblock %}

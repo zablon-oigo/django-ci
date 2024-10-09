@@ -1,30 +1,20 @@
 {% extends 'base.html' %}
-
-{% block title %}
-Share a post
-{% endblock %}
-
+{% block title %}Share a post{% endblock %}
 {% block content %}
-{% if sent %}
-<h2 class="">
-    Email sent successfully
-</h2>
-<p class="">
-    "{{post.title}}" was successfully sent to {{form.cleaned_data.to}}.
-</p>
-{% else %}
-<h2 class="">
-    Share "{{post.title}}" by e-mail
-</h2>
-<form action="" method="post" class="">
-    {% for field in form %}
-    <div class="">
-        {{field.errors}}
-        {{field.label_tag}}{{field}}
-    </div>
-    {% endfor %}
-    {% csrf_token %}
-    <input type="submit" value="Send e-mail" class="">
-</form>
-{% endif %}
+    {% if sent %}
+        <h2 class="">Email sent successfully</h2>
+        <p class="">"{{ post.title }}" was successfully sent to {{ form.cleaned_data.to }}.</p>
+    {% else %}
+        <h2 class="">Share "{{ post.title }}" by e-mail</h2>
+        <form action="" method="post" class="">
+            {% for field in form %}
+                <div class="">
+                    {{ field.errors }}
+                    {{ field.label_tag }}{{ field }}
+                </div>
+            {% endfor %}
+            {% csrf_token %}
+            <input type="submit" value="Send e-mail" class="">
+        </form>
+    {% endif %}
 {% endblock %}
