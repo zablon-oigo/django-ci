@@ -8,6 +8,9 @@
                 <h2 class="">
                     <a href="{{ post.get_absolute_url }}" class="">{{ post.title }}</a>
                 </h2>
+                <p class="">
+                    Tags: {{post.tags.all|join:", "}}
+                </p>
             {% endfor %}
         </div>
     </div>
