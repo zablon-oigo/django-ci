@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.core.mail import send_mail
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, render
 from taggit.models import Tag
 
@@ -25,7 +26,14 @@ def post_detail(request, year, month, day, post):
         publish__month=month,
         publish__day=day,
     )
-    return render(request, "post/detail.html", {"post": post})
+    post_tags_ids = post.tags.values_list("id", flat=True)
+    similar_posts = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
+    similar_posts = similar_posts.annotate(same_tags=Count("tags")).order_by(
+        "-same_tags", "-publish"
+    )[:4]
+    return render(
+        request, "post/detail.html", {"post": post, "similar_posts": similar_posts}
+    )
 
 
 def post_share(request, post_id):
