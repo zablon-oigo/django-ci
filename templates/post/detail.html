@@ -7,6 +7,17 @@
             <p class="">{{ post.body }}</p>
         </div>
         <div class="">
+            {% for post in similar_posts %}
+            <p class="">
+                <a href="{{post.get_absolute_url}}" class="">
+                    {{post.title}}
+                </a>
+            </p>
+            {% empty %}
+            There are no similar post yet
+            {% endfor %}
+        </div>
+        <div class="">
             <a href="{% url 'blog:post_share' post.id %}" class="">share this post</a>
         </div>
     </div>
