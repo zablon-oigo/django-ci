@@ -3,6 +3,11 @@
 {% block content %}
     <div class="">
         <h2 class="">my blog</h2>
+        {% if tag %}
+        <h2 class="">
+            Posts tagged with "{{tag.name}}"
+        </h2>
+        {% endif %}
         <div class="">
             {% for post in posts %}
                 <h2 class="">
