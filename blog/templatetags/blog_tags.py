@@ -6,5 +6,5 @@ register = template.Library()
 
 
 @register.simple_tag
-def total_post():
+def total_posts():
     return Post.published.count()
