@@ -22,7 +22,7 @@ class RegisterUser(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ["email", "password1", "password2"]
+        fields = ["username", "email", "password1", "password2"]
 
     def clean_password(self):
         cd = self.cleaned_data
@@ -41,3 +41,28 @@ class RegisterUser(forms.ModelForm):
 class LoginForm(forms.Form):
     email = forms.CharField(max_length=65)
     password = forms.CharField(max_length=65)
+
+
+class VerifyForm(forms.Form):
+    otp = forms.CharField(
+        label="Enter OTP",
+        max_length=6,
+        min_length=6,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Enter your OTP",
+                "class": "",
+            }
+        ),
+        error_messages={
+            "required": "Please enter the OTP.",
+            "max_length": "OTP must be exactly 6 digits long.",
+            "min_length": "OTP must be exactly 6 digits long.",
+        },
+    )
+
+    def clean_otp(self):
+        otp = self.cleaned_data.get("otp")
+        if not otp.isdigit():
+            raise forms.ValidationError("OTP must be numeric.")
+        return otp
