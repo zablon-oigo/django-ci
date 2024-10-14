@@ -1,5 +1,9 @@
+import pytest
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from django.utils import timezone
+
+User = get_user_model()
 
 
 class UsersMnagersTest(TestCase):
@@ -38,3 +42,31 @@ class UsersMnagersTest(TestCase):
             User.objects.create_user(
                 email="superuser@mail.com", password="test", is_superuser=False
             )
+
+
+@pytest.mark.django_db
+class TestCustomUserModel:
+    @pytest.fixture
+    def create_user(self):
+        return User.objects.create_user(
+            email="testuser@example.com", username="testuser", password="password123"
+        )
+
+    def test_user_creation(self, create_user):
+        user = create_user
+        assert user.email == "testuser@example.com"
+        assert user.username == "testuser"
+        assert user.is_active is True
+        assert user.is_staff is False
+        assert user.date_joined <= timezone.now()
+
+    def test_user_str(self, create_user):
+        user = create_user
+        assert str(user) == user.username
+
+    def test_user_secret_key(self, create_user):
+        user = create_user
+        assert user.secret_key is None
+        user.secret_key = "some_secret_key"
+        user.save()
+        assert user.secret_key == "some_secret_key"
