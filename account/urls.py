@@ -16,5 +16,11 @@ urlpatterns = [
         ),
         name="password-reset",
     ),
-    path(),
+    path(
+        "password-rest-done/",
+        auth_views.PasswordResetDoneView.as_view(
+            template_name="accounts/password-reset-done.html"
+        ),
+        name="password-reset-done",
+    ),
 ]
