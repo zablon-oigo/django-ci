@@ -21,6 +21,7 @@ class Post(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="blog_posts"
     )
     slug = models.SlugField(max_length=200, unique_for_date="publish")
+    image = models.ImageField(upload_to="post", blank=True, null=True)
     body = models.TextField()
     publish = models.DateTimeField(default=timezone.now)
     status = models.CharField(
