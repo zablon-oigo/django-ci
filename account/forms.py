@@ -66,3 +66,15 @@ class VerifyForm(forms.Form):
         if not otp.isdigit():
             raise forms.ValidationError("OTP must be numeric.")
         return otp
+
+
+class PasswordResetRequestForm(forms.Form):
+    email = forms.EmailField(max_length=255)
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if not CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError(
+                "No user is associated with this email address."
+            )
+        return email
