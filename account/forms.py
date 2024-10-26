@@ -1,5 +1,10 @@
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.contrib.auth.models import User
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.core.exceptions import ValidationError
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
 
 from .models import CustomUser
 
@@ -78,3 +83,41 @@ class PasswordResetRequestForm(forms.Form):
                 "No user is associated with this email address."
             )
         return email
+
+
+class SetNewPasswordForm(forms.Form):
+    password = forms.CharField(
+        max_length=100, min_length=6, widget=forms.PasswordInput, label="Password"
+    )
+    confirm_password = forms.CharField(
+        max_length=100,
+        min_length=6,
+        widget=forms.PasswordInput,
+        label="Confirm Password",
+    )
+    uidb64 = forms.CharField(widget=forms.HiddenInput)
+    token = forms.CharField(widget=forms.HiddenInput)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+        uidb64 = cleaned_data.get("uidb64")
+        token = cleaned_data.get("token")
+
+        if password != confirm_password:
+            raise ValidationError("Passwords do not match")
+
+        try:
+            user_id = force_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(id=user_id)
+
+            if not PasswordResetTokenGenerator().check_token(user, token):
+                raise ValidationError("The reset link is invalid or has expired")
+            user.set_password(password)
+            user.save()
+
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            raise ValidationError("The reset link is invalid or has expired")
+
+        return cleaned_data
