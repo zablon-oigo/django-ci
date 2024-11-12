@@ -3,10 +3,22 @@ from datetime import timedelta
 import pyotp
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.utils import timezone
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.views import View
 
-from .forms import LoginForm, RegisterUser, VerifyForm
+from .forms import (
+    LoginForm,
+    PasswordResetRequestForm,
+    RegisterUser,
+    SetNewPasswordForm,
+    VerifyForm,
+)
 from .models import CustomUser
 from .utils import send_code_to_user
 
@@ -82,3 +94,42 @@ def resend_otp_view(request):
     send_code_to_user(request, user.email)
     messages.success(request, "A new OTP has been sent to your email.")
     return redirect("verify")
+
+
+def password_reset_request(request):
+    if request.method == "POST":
+        form = PasswordResetRequestForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            user = CustomUser.objects.get(email=email)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            current_site = get_current_site(request)
+            reset_link = f"http://{current_site.domain}/reset/{uid}/{token}/"
+            email_body = (
+                f"Hello, use the link below to reset your password:\n{reset_link}"
+            )
+            send_mail(
+                subject="Reset your Password",
+                message=email_body,
+                from_email=None,
+                recipient_list=[user.email],
+            )
+            return render(request, "account/password-reset-done.html")
+    else:
+        form = PasswordResetRequestForm()
+    return render(request, "account/password-reset-form.html", {"form": form})
+
+
+class SetNewPasswordView(View):
+    def get(self, request):
+        form = SetNewPasswordForm()
+        return render(request, "set-new-password.html", {"form": form})
+
+    def post(self, request):
+        form = SetNewPasswordForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Password has been reset successfully")
+            return redirect("login")
+        return render(request, "set-new-password.html", {"form": form})
