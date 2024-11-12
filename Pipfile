@@ -11,6 +11,7 @@ environs = "*"
 django-taggit = "*"
 pyotp = "*"
 pytest = "*"
+markdown = "*"
 
 [dev-packages]
 
