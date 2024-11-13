@@ -17,6 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from blog.sitemaps import PostSitemap
+
+sitemaps = {
+    "posts": PostSitemap,
+}
 admin.site.site_title = "Site admin (DEV)"
 admin.site.site_header = "BlogSite administration"
 admin.site.index_title = "Site administration"
