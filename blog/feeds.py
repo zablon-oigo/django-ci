@@ -11,3 +11,6 @@ class LatestPostsFeed(Feed):
 
     def items(self):
         return Post.published.all()[:5]
+
+    def items_title(self, item):
+        return item.title
