@@ -39,8 +39,10 @@ INSTALLED_APPS = [
     "account.apps.AccountConfig",
     "blog.apps.BlogConfig",
     "taggit",
+    "django.contrib.sites",
+    "django.contrib.sitemaps",
 ]
-
+SITE_ID = 1
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
