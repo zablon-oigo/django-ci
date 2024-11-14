@@ -14,3 +14,6 @@ class LatestPostsFeed(Feed):
 
     def items_title(self, item):
         return item.title
+
+    def item_update(self, item):
+        return item.publish
