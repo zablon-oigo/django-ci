@@ -1,10 +1,11 @@
 from django.conf import settings
+from django.contrib.postgres.search import SearchVector
 from django.core.mail import send_mail
 from django.db.models import Count
 from django.shortcuts import get_object_or_404, render
 from taggit.models import Tag
 
-from .forms import EmailPostForm
+from .forms import EmailPostForm, SearchForm
 from .models import Post
 
 
@@ -53,3 +54,13 @@ def post_share(request, post_id):
     return render(
         request, "post/share.html", {"post": post, "form": form, "sent": sent}
     )
+
+
+def post_search(request):
+    form = SearchForm()
+
+    if "query" in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            form.cleaned_data["query"]
+            Post.published.annotate(search=SearchVector("title", "body"))
