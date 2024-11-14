@@ -14,5 +14,10 @@
         <div class="">
             Number of articles {% total_posts %}
         </div>
+        <p class="">
+            <a href="{% url 'blog:post-feed' %}" class="">
+                subscribe to RSS feed
+            </a>
+        </p>
     </body>
 </html>
