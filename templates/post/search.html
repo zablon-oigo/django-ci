@@ -11,5 +11,17 @@
     Found {{total_results}} result{{total_results|pluralize}}
     {%endwith%}
 </h4>
+<div class="">
+    {% for post in results %}
+    <h4 class="">
+        <a href="{{post.get_absolute_url}}" class="">
+            {{post.title}}
+        </a>
+    </h4>
+    <p class="">
+        {{post.body}}
+    </p>
+    {% endfor %}
+</div>
 {% endif %}
 {% endblock %}
