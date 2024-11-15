@@ -21,7 +21,16 @@
     <p class="">
         {{post.body}}
     </p>
+    {% empty %}
+    <p>
+        There are no result for you query.
+    </p>
     {% endfor %}
+    <p class="">
+        <a href="{% url 'blog:post_search'%}" class="">
+            search again
+        </a>
+    </p>
 </div>
 {% endif %}
 {% endblock %}
